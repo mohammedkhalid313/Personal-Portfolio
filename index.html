@@ -677,34 +677,31 @@
 
         <form id="gform" action="https://script.google.com/macros/s/AKfycbxtT8n2W8Osw-agaJmLvRz7b1MFK8r4cpIWPu6QPdSRyZDfMBJtzRJp629lW-aHZnkh/exec" method="post">
           <div class="row gy-4">
-
             <div class="col-md-6">
-              <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+              <input type="text" name="name" class="form-control" placeholder="Your Name" required>
             </div>
-
-            <div class="col-md-6 ">
-              <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+        
+            <div class="col-md-6">
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required>
             </div>
-
+        
             <div class="col-md-12">
-              <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+              <input type="text" class="form-control" name="subject" placeholder="Subject" required>
             </div>
-
+        
             <div class="col-md-12">
-              <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+              <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
             </div>
-
+        
             <div class="col-md-12 text-center">
-              <div class="loading">Loading</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Your message has been sent. Thank you!</div>
-
+              <div class="loading" style="display:none;">Loading</div>
+              <div class="error-message" style="color: red;"></div>
+              <div class="sent-message" style="color: green; display:none;">Your message has been sent. Thank you!</div>
+        
               <button type="submit">Send Message</button>
             </div>
-
           </div>
-        </form><!-- End Contact Form -->
-
+        </form>
       </div>
 
     </section><!-- /Contact Section -->
@@ -740,20 +737,95 @@
   <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+
+   <!-- Vendor JS Files -->
+   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
+   <script src="assets/vendor/aos/aos.js"></script>
+   <script src="assets/vendor/typed.js/typed.umd.js"></script>
+   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  
+  
+   <script>
+    
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('gform');
+      const errorMessage = document.querySelector('.error-message');
+      const sentMessage = document.querySelector('.sent-message');
+      const loading = document.querySelector('.loading');
+    
+      form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+    
+        let isValid = true;
+    
+        // Clear previous error messages
+        errorMessage.textContent = '';
+    
+        // Validate required inputs
+        const inputs = form.querySelectorAll('input[required], textarea[required]');
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            isValid = false;
+            errorMessage.textContent = 'Please fill out all required fields.';
+          }
+        });
+    
+        // Validate the name field
+        const nameField = form.querySelector('input[name="name"]');
+        const namePattern = /^[A-Za-z\s]+$/;
+    
+        if (nameField && !namePattern.test(nameField.value.trim())) {
+          isValid = false;
+          errorMessage.textContent = 'Name should not contain numbers or special characters.';
+        }
+    
+        if (isValid) {
+          // Show loading message
+          loading.style.display = 'block';
+    
+          // Perform AJAX submission if the form is valid
+          $.ajax({
+            url: "https://script.google.com/macros/s/AKfycbxtT8n2W8Osw-agaJmLvRz7b1MFK8r4cpIWPu6QPdSRyZDfMBJtzRJp629lW-aHZnkh/exec",
+            data: $(form).serialize(),
+            method: "post",
+            success: function(response) {
+              loading.style.display = 'none';
+              sentMessage.style.display = 'block'; 
+              alert("Form submitted successfully");
+              window.location.reload(); // Reload the page
+            },
+            error: function(err) {
+              loading.style.display = 'none';
+              alert("Something went wrong. Please try again.");
+            }
+          });
+        }
+      });
+    });
+    
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
   <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  
+  <!-- Main JS File -->
+  
+  
+
+</body>
+
+</html>
 
 </body>
 
